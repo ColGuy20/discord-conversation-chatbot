@@ -3,6 +3,8 @@ import conversation as cvsn
 import config as cfg
 from discord import app_commands
 
+#--Contains client and commands--
+
 def run_bot():
     # Set vars
     intents = discord.Intents.default()
