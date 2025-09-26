@@ -14,5 +14,5 @@ Go to your app, if not already on the page. On the right side you should see the
 ### Adding the bot to your server
 Now, above the 'bot' category click on the 'OAuth2' category. Scroll down to the 'OAuth2 URL Generator' and select 'applications.commands' and 'bot'. Scroll down to the 'bot permissions' that just popped up and select the permissions you want to give your bot. If you are unsure give it 'Administrator' which gives it all the permissions. Use the URL at the bottom to add your bot to your server.
 ## Set TOKEN in .env
-Make ```.env``` file and set: ```DISCORD_TOKEN={YOUR_TOKEN_GOES_HERE}```
+Make ```.env``` file and set: ```BOT_TOKEN={YOUR_TOKEN_GOES_HERE}```
 (The token is not a String)
