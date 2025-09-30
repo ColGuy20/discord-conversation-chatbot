@@ -1,10 +1,14 @@
 import config as cfg
+import api
 
 #--Direct Message Conversation--
 
 # IN DEVELOPMENT
-def conversation_start(language: str, intended_profile: str) -> str:
+async def conversation_start(language: str, intended_profile: str) -> str:
     p = cfg.profile_info(intended_profile)
 
-    first_msg = f"Hello! I am {p.name}. I am {p.age} years old. I will be speaking {language} with you!"
-    # TOKEN is p.token
+    response = await api.first_prompt(p, language)
+    return response  
+
+async def conversation():
+    return

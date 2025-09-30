@@ -16,3 +16,8 @@ Now, above the `bot` category click on the `OAuth2` category. Scroll down to the
 ## Set TOKEN in .env
 Make `.env` file and set: `BOT_TOKEN={YOUR_TOKEN_GOES_HERE}`
 (The token is not a String)
+# Steps to using chatGPT API
+## Install OpenAI
+To install openai run: `pip install openai`
+## Set KEY in .env
+In `.env` file set: `API_KEY=(YOUR_KEY_GOES_HERE)`

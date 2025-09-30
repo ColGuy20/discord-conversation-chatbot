@@ -29,18 +29,53 @@ def run_bot():
         profile=[app_commands.Choice(name=p, value=p) for p in cfg.list_profile_names()]
         )
     async def launch(interaction: discord.Interaction, language: str, profile: str):
+        is_dm = interaction.guild is None
         try:
-            await interaction.response.send_message(
-                f"Sent you a direct message!", 
-                ephemeral=True
-            )
-            cvsn.conversation_start(language, profile)
+            if is_dm:
+                await interaction.response.send_message("Starting your session…")
+            else:
+                await interaction.response.defer(ephemeral=True, thinking=True)
+
+            msg = await cvsn.conversation_start(language, profile)
+
+            if is_dm:
+                await interaction.edit_original_response(content=msg)
+            else:
+                await interaction.user.send(msg)
+                await interaction.followup.send("Sent you a direct message!", ephemeral=True)
 
         except discord.Forbidden:
-            await interaction.response.send_message(
-                "I cannot send a direct message to you. You may have direct messages off.",
-                ephemeral=True
-            )
+            text = ("I cannot send you a direct message.\nYou may have direct messages off.")
+            if interaction.response.is_done():
+                try:
+                    if is_dm:
+                        await interaction.edit_original_response(content=text)
+                    else:
+                        await interaction.followup.send(text, ephemeral=True)
+                except Exception as e2:
+                    print(f"[LOG] Forbidden fallback failed: {e2}")
+            else:
+                try:
+                    await interaction.response.send_message(text, ephemeral=not is_dm)
+                except Exception as e3:
+                    print(f"[LOG] response send_message failed: {e3}")
+
+        except Exception as e:
+            print(f"[LOG] Error in /launch: {e}")
+            msg = "Something went wrong starting the session."
+            if interaction.response.is_done():
+                try:
+                    if is_dm:
+                        await interaction.edit_original_response(content=msg)
+                    else:
+                        await interaction.followup.send(msg, ephemeral=True)
+                except Exception as e2:
+                    print(f"[LOG] followup/edit failed: {e2}")
+            else:
+                try:
+                    await interaction.response.send_message(msg, ephemeral=not is_dm)
+                except Exception as e3:
+                    print(f"[LOG] response send_message failed: {e3}")
 
     # Command to directly sync from discord
     @tree.command(name="sync", description="Sync app commands (developer)")
