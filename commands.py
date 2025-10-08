@@ -1,13 +1,15 @@
 import discord
+from discord import app_commands
 import conversation as cvsn
 import config as cfg
-from discord import app_commands
 
 #--Contains client and commands--
 
 def run_bot():
     # Set vars
     intents = discord.Intents.default()
+    intents.message_content = True
+    intents.dm_messages = True
     client = discord.Client(intents=intents)
     tree = app_commands.CommandTree(client)
 
@@ -36,12 +38,12 @@ def run_bot():
             else:
                 await interaction.response.defer(ephemeral=True, thinking=True)
 
-            msg = await cvsn.conversation_start(language, profile)
+            first_msg = await cvsn.start_session(language, profile, interaction.user.id)
 
             if is_dm:
-                await interaction.edit_original_response(content=msg)
+                await interaction.edit_original_response(content=first_msg)
             else:
-                await interaction.user.send(msg)
+                await interaction.user.send(first_msg)
                 await interaction.followup.send("Sent you a direct message!", ephemeral=True)
 
         except discord.Forbidden:
@@ -77,6 +79,15 @@ def run_bot():
                 except Exception as e3:
                     print(f"[LOG] response send_message failed: {e3}")
 
+    # Command to end session
+    @tree.command(name="end", description="End your current tutoring session.")
+    async def end_cmd(interaction: discord.Interaction):
+        # End the caller's session
+        result = await cvsn.end_session(interaction.user.id)
+        await interaction.response.send_message(result, ephemeral=True)
+
+    #---DEV COMMANDS---
+
     # Command to directly sync from discord
     @tree.command(name="sync", description="Sync app commands (developer)")
     async def sync(interaction: discord.Interaction):
@@ -110,6 +121,48 @@ def run_bot():
             return
         await interaction.response.send_message("Shutting down…", ephemeral=True)
         await client.close()
+
+    # Command to list sessions
+    @tree.command(name="list", description="List sessions. (developer)")
+    async def list(interaction: discord.Interaction):
+        if interaction.user.id != cfg.USER_ID:
+            await interaction.response.send_message(
+                "You do not have permission to use this command!", ephemeral=True
+            )
+            return
+        
+        if not cfg.SESSIONS:
+            session_list = "No sessions."
+        else:
+            lines = []
+            for uid, s in cfg.SESSIONS.items():
+                status = "ACTIVE" if s.active else "ENDED"
+                lines.append(
+                    f"- user_id={uid} | profile={s.profile.name} | lang={s.language} | "
+                    f"{status} | turns={len(s.messages)}"
+                )
+        session_list = "Sessions:\n" + "\n".join(lines)
+        await interaction.response.send_message(session_list, ephemeral=True)
+
+    # DM message router to power the loop
+    @client.event
+    async def on_message(message: discord.Message):
+        if message.author.bot:
+            return
+        if message.guild is not None:
+            return
+
+        user_id = message.author.id
+        if cvsn.has_session(user_id):
+            try:
+                async with message.channel.typing():
+                    reply_text, _ = await cvsn.conversation(user_id, message.content)
+                await message.channel.send(reply_text)
+            except Exception as e:
+                print(f"[LOG] on_message error for {user_id}: {e}")
+                await message.channel.send("Something went wrong processing your message.")
+        else:
+            await message.channel.send("No active session. Use /launch to start one.")
 
     # Run client
     client.run(cfg.TOKEN)
