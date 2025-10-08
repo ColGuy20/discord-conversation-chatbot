@@ -1,2 +1,6 @@
-.env
-__pycache__
+# Environment files
+src/.env
+
+# Python cache
+**__pycache__/
+*.pyc
