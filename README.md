@@ -23,3 +23,29 @@ Make `.env` file and set: `BOT_TOKEN={YOUR_TOKEN_GOES_HERE}`
 To install openai run: `pip install openai`
 ## Set KEY in .env
 In `.env` file set: `API_KEY=(YOUR_KEY_GOES_HERE)`
+# Containers with Docker
+## Download Docker
+### Windows:
+Click on this link: [Docker Windows Install Link](https://docs.docker.com/desktop/setup/install/windows-install/)
+Click `Docker Desktop for Windows - x86_64` to download and run it.
+### Mac:
+Click on this link: [Docker Mac Install Link](https://docs.docker.com/desktop/setup/install/mac-install/)
+Click `Docker Desktop for Mac with Apple silicon` or `Docker Desktop for Mac with Intel chip` depending on your computer to download Docker.
+## Run Docker
+Run the download file, follow any download procedures, and wait for it to finish. Accept the terms and services. You do not need to sign in; at the top, there is a skip button to avoid putting in your information. At the bottom there is a bar that allows you to run, pause, and stop docker.
+## Run Container
+Run `docker build -t (IMAGE_NAME) .` (change `(IMAGE_NAME)` depending on the image name that you want). This will build the image for the container. An image is the 'blueprint' for the containers that contains the instructions.
+Run `docker run -d -p (PORT) (IMAGE_NAME)` (change `(PORT)` to the one you want to use and `(IMAGE_NAME)` depending on the image name that you chose). This runs the program on the chosen port using the chosen image. For now, I am using the 8080:8080 port for development.
+## Useful Docker Commands
+`docker ps -a` - List all containers (Remove `-a` to only show running ones)
+`docker stop <container_id>` - Stop a container
+`docker restart <container_id` - Restart a container
+`docker rm <container_id>` - Remove a container
+`docker container prune` - Remove all containers
+
+`docker images -a` - List all images
+`docker rmi <image_name>` - Remove an image
+`docker image prune -a` - Remove all images
+
+`docker builder prune` - Reclaim disk space
+`docker system prune -a` - Remove everything

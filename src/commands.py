@@ -120,6 +120,7 @@ def run_bot():
             )
             return
         await interaction.response.send_message("Shutting down…", ephemeral=True)
+        print("[LOG] Bot has been shut down from discord.")
         await client.close()
 
     # Command to list sessions
