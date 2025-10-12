@@ -1,0 +1,76 @@
+name: Build & Deploy DCC to Google Cloud Run v1.0
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - "Dockerfile"
+      - "**/*.py"
+      - ".github/workflows/deploy.yml"
+      - "requirements.txt"
+
+    tags: [ "V*" ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    env:
+      PROJECT_ID: ${{ secrets.PROJECT_ID }}
+      REGION: us-central1
+      SERVICE: dcc-service
+      IMAGE: gcr.io/${{ secrets.PROJECT_ID }}/dcc
+
+    steps:
+    - name: Check Out Code
+      uses: actions/checkout@v3  # Updated to a newer version supporting Node.js 20
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+
+    - name: Log in to Google Container Registry
+      uses: docker/login-action@v2
+      with:
+        registry: gcr.io
+        username: _json_key
+        password: ${{ secrets.PRIVATE_KEY }}
+
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v3
+      with:
+        context: .
+        file: ./Dockerfile
+        push: true
+        tags: gcr.io/${{ secrets.PROJECT_ID }}/dcc:${{ github.sha }}
+
+    - name: Authenticate to Google Cloud manually
+      env:
+        GCP_JSON_KEY: ${{ secrets.PRIVATE_KEY }}  # Pass the secret as an environment variable
+      run: |
+        echo "$GCP_JSON_KEY" > /tmp/gcp-key.json
+        gcloud auth activate-service-account --key-file=/tmp/gcp-key.json
+
+    - name: Set Google Cloud Project
+      env:
+        GCP_PROJ_ID: ${{ secrets.PROJECT_ID }}
+      run: gcloud config set project "$GCP_PROJ_ID"
+
+    - name: Verify Authentication
+      run: |
+        gcloud auth list
+        gcloud config list project
+
+    - name: Deploy to Google Cloud Run
+      run: |
+        gcloud run deploy dcc-service \
+          --image gcr.io/${{ secrets.PROJECT_ID }}/dcc:${{ github.sha }} \
+          --platform managed \
+          --region us-central1 \
+          --allow-unauthenticated \
+          --set-env-vars BOT_TOKEN="${{ secrets.BOT_TOKEN }}" \
+          --set-env-vars DISCORD_ID="${{ secrets.DISCORD_ID }}" \
+          --set-env-vars API_KEY="${{ secrets.API_KEY }}" \
+          --set-env-vars PROFILE_TOKEN_1="${{ secrets.PROFILE_TOKEN_1 }}" \
+          --set-env-vars PROFILE_TOKEN_2="${{ secrets.PROFILE_TOKEN_2 }}" \
+          --set-env-vars PROFILE_TOKEN_3="${{ secrets.PROFILE_TOKEN_3 }}" 
+      shell: bash
