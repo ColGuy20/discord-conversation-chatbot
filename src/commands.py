@@ -1,4 +1,4 @@
-import discord
+import discord, logging
 from discord import app_commands
 import conversation as cvsn
 import config as cfg
@@ -166,4 +166,4 @@ def run_bot():
             await message.channel.send("No active session. Use /launch to start one.")
 
     # Run client
-    client.run(cfg.TOKEN)
+    client.run(cfg.TOKEN, log_level=logging.WARNING)

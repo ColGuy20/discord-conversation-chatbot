@@ -1,12 +1,14 @@
-import threading
+import os, threading
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
+#--Web Server--
 
 class _HealthHandler(BaseHTTPRequestHandler):
     def do_GET(self):
+        body = b"HEALTHY"
         self.send_response(200)
         self.end_headers()
-        self.wfile.write(b"HEALTHY")
+        self.wfile.write(body)
 
     # Silence Request Logging
     def log_message(self, format, *args):
