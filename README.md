@@ -37,15 +37,16 @@ Run the download file, follow any download procedures, and wait for it to finish
 Run `docker build -t (IMAGE_NAME) .` (change `(IMAGE_NAME)` depending on the image name that you want). This will build the image for the container. An image is the 'blueprint' for the containers that contains the instructions.
 Run `docker run -d -p (PORT) (IMAGE_NAME)` (change `(PORT)` to the one you want to use and `(IMAGE_NAME)` depending on the image name that you chose). This runs the program on the chosen port using the chosen image. For now, I am using the 8080:8080 port for development.
 ## Useful Docker Commands
+### Container Commands
 `docker ps -a` - List all containers (Remove `-a` to only show running ones)
 `docker stop <container_id>` - Stop a container
 `docker restart <container_id` - Restart a container
 `docker rm <container_id>` - Remove a container
 `docker container prune` - Remove all containers
-
+### Image Commands
 `docker images -a` - List all images
 `docker rmi <image_name>` - Remove an image
 `docker image prune -a` - Remove all images
-
+### Powerful Commands
 `docker builder prune` - Reclaim disk space
 `docker system prune -a` - Remove everything

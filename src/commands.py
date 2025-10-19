@@ -142,8 +142,8 @@ def run_bot():
                     f"- user_id={uid} | profile={s.profile.name} | lang={s.language} | "
                     f"{status} | turns={len(s.messages)}"
                 )
-        session_list = "Sessions:\n" + "\n".join(lines)
-        await interaction.response.send_message(session_list, ephemeral=True)
+            sessions_list = "Sessions:\n" + "\n".join(lines)
+        await interaction.response.send_message(sessions_list, ephemeral=True)
 
     # DM message router to power the loop
     @client.event
