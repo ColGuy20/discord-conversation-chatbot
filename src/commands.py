@@ -32,6 +32,7 @@ def run_bot():
         )
     async def launch(interaction: discord.Interaction, language: str, profile: str):
         is_dm = interaction.guild is None
+        cfg.log_checkpoint() # 1
         try:
             if is_dm:
                 await interaction.response.send_message("Starting your session…")

@@ -75,3 +75,13 @@ def recommended_language(chosen_language):
         if p.language.lower() == chosen_language:
             # Add profile
             return ""
+
+CHECKPOINT = 0
+
+def log_checkpoint():
+    CHECKPOINT += 1
+    print("[LOG] Checkpoint "+CHECKPOINT+".")
+
+def owner_checkpoint(id):
+    if id == USER_ID:
+        log_checkpoint()
