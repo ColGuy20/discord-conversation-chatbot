@@ -119,16 +119,27 @@ def run_bot():
                 "You do not have permission to use this command!", ephemeral=True
             )
             return
-        if not cfg.SESSIONS:
-            sessions_list = "No sessions."
-        else:
-            lines = []
-            for uid, s in cfg.SESSIONS.items():
-                status = "ACTIVE" if s.active else "ENDED"
-                lines.append(f"- user_id={uid} | profile={s.profile.name} | lang={s.language} | {status} | turns={len(s.messages)} | user_name={s.user_name}")
-            sessions_list = "Sessions:\n" + "\n".join(lines)
-        await interaction.response.send_message(sessions_list, ephemeral=True)
-        print("[LOG] Sessions list sent to discord")
+        try:
+            if not cfg.SESSIONS:
+                sessions_list = "No sessions."
+            else:
+                lines = []
+                for uid, s in cfg.SESSIONS.items():
+                    status = "ACTIVE" if getattr(s, "active", False) else "ENDED"
+                    profile_name = getattr(getattr(s, "profile", None), "name", "<unknown>")
+                    language = getattr(s, "language", "<unknown>")
+                    turns = len(getattr(s, "messages", []) or [])
+                    user_name = getattr(s, "user_name", "<unknown>")
+                    lines.append(
+                        f"- user_id={uid} | profile={profile_name} | lang={language} | {status} | turns={turns} | user_name={user_name}"
+                    )
+                sessions_list = "Sessions:\n" + "\n".join(lines)
+
+            await interaction.response.send_message(sessions_list, ephemeral=True)
+            print("[LOG] Sessions list sent to discord")
+        except Exception as e:
+            await interaction.response.send_message("Failed to build session list. Check logs.", ephemeral=True)
+            print(f"[LOG] /list error: {e}")
 
     # DM message router to power the loop
     @client.event

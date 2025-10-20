@@ -51,7 +51,7 @@ TOKEN_P3 = os.getenv("PROFILE_TOKEN_3")
 # PROFILES
 profiles_array = [
     Profile("Bob", 24, TOKEN_P1, "male", "friendly helpful", "teacher", "united states", "two children and one wife"),
-    Profile("Amy", 31, TOKEN_P2, "female", "snarky snide", "secretary at a finance company", "england", "live in busy city, casual relationships"),
+    Profile("Amy", 31, TOKEN_P2, "female", "cold sarcastic blunt", "secretary at a finance company", "england", "live in busy city, casual relationships, keeps emotional distance, prefers efficiency over kindness"),
     Profile("Jorge", 38, TOKEN_P3, "male", "hardworking experienced", "construction worker", "mexico", "moved to united states with family, relatives back in mexico")
 ]
 
