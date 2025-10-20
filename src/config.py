@@ -10,8 +10,8 @@ from dotenv import load_dotenv
 @dataclass
 class Profile:
     name: str
-    age: int
     token: str
+    age: int
     gender: str
     description: str
     work: str
@@ -50,9 +50,9 @@ TOKEN_P3 = os.getenv("PROFILE_TOKEN_3")
 
 # PROFILES
 profiles_array = [
-    Profile("Bob", 24, TOKEN_P1, "male", "friendly helpful", "teacher", "united states", "two children and one wife, lives in suburbs"),
-    Profile("Amy", 31, TOKEN_P2, "female", "cold sarcastic blunt", "secretary at a finance company", "england", "live in busy city, casual relationships, keeps emotional distance, prefers efficiency over kindness"),
-    Profile("Jorge", 38, TOKEN_P3, "male", "short-worded hardworking experienced", "construction worker", "mexico", "moved to united states with family, relatives back in mexico")
+    Profile("Bob", TOKEN_P1, 29, "male", "friendly helpful", "teacher", "united states", "two children and one wife, lives in suburbs"),
+    Profile("Amy", TOKEN_P2, 34, "female", "cold sarcastic blunt", "secretary at a finance company", "england", "live in busy city, casual relationships, keeps emotional distance, prefers efficiency over kindness"),
+    Profile("Jorge", TOKEN_P3, 43, "male", "short-worded hardworking experienced", "construction worker", "mexico", "moved to united states with family, relatives back in mexico")
 ]
 
 # LANGUAGES
