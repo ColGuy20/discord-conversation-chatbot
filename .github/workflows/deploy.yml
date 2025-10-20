@@ -63,7 +63,9 @@ jobs:
         gcloud run deploy dcc-service \
           --image gcr.io/${{ secrets.PROJECT_ID }}/dcc:${{ github.sha }} \
           --platform managed \
-          --region us-central1 \
+          --region us-central1 \How 
+          --cpu-boost \
+          --min-instances=1 \
           --allow-unauthenticated \
           --set-env-vars BOT_TOKEN="${{ secrets.BOT_TOKEN }}" \
           --set-env-vars DISCORD_ID="${{ secrets.DISCORD_ID }}" \

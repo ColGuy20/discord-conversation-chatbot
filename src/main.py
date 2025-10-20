@@ -1,10 +1,12 @@
-import sys, traceback
+import sys, traceback, api
 import commands as cmd
 import webserver as ws
 
 #--Main--
 
 if __name__ == "__main__":
+    api.prime_imports()
+
     server, thread = ws.start_web_server()
     print("[LOG] Web server is active on port 8080")
 

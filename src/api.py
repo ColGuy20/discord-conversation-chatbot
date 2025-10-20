@@ -11,3 +11,7 @@ async def fetch_api(messages: list[dict]) -> str:
         messages=messages,
     )
     return str(resp.choices[0].message.content)
+
+# NEW: force lazy imports before the Discord event loop starts
+def prime_imports():
+    _ = _client.chat
