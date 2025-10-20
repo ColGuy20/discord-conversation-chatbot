@@ -15,7 +15,8 @@ class Profile:
     gender: str
     description: str
     work: str
-    language: str
+    country: str
+    background: str
 
 # Session Class
 @dataclass
@@ -49,9 +50,9 @@ TOKEN_P3 = os.getenv("PROFILE_TOKEN_3")
 
 # PROFILES
 profiles_array = [
-    Profile("Bob", 24, TOKEN_P1, "male", "friendly", "teacher", "english"),
-    Profile("Amy", 31, TOKEN_P2, "female", "witty", "secretary at finance company", "english"),
-    Profile("Jorge", 38, TOKEN_P3, "male", "hardworking", "construction", "spanish")
+    Profile("Bob", 24, TOKEN_P1, "male", "friendly helpful", "teacher", "united states", "two children and one wife"),
+    Profile("Amy", 31, TOKEN_P2, "female", "snarky snide", "secretary at a finance company", "england", "live in busy city, casual relationships"),
+    Profile("Jorge", 38, TOKEN_P3, "male", "hardworking experienced", "construction worker", "mexico", "moved to united states with family, relatives back in mexico")
 ]
 
 # LANGUAGES

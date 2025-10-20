@@ -128,7 +128,7 @@ def run_bot():
                 lines.append(f"- user_id={uid} | profile={s.profile.name} | lang={s.language} | {status} | turns={len(s.messages)} | user_name={s.user_name}")
             sessions_list = "Sessions:\n" + "\n".join(lines)
         await interaction.response.send_message(sessions_list, ephemeral=True)
-        print("[LOG] List sent to discord")
+        print("[LOG] Sessions list sent to discord")
 
     # DM message router to power the loop
     @client.event

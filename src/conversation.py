@@ -16,8 +16,10 @@ async def start_session(language: str, intended_profile: str, user_id: int, user
         - Name: {profile.name}
         - Age: {profile.age}
         - Gender: {profile.gender}
-        - Occupation: {profile.work}
         - Personality: {profile.description}
+        - Occupation: {profile.work}
+        - Birth Country: {profile.country}
+        - Background: {profile.background}
 
         Rules:
         1. Stay in character at all times. Do not mention you are an AI or chatbot.
