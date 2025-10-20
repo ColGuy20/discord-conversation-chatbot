@@ -52,7 +52,7 @@ TOKEN_P3 = os.getenv("PROFILE_TOKEN_3")
 profiles_array = [
     Profile("Bob", TOKEN_P1, 29, "male", "friendly helpful", "teacher", "united states", "two children and one wife, lives in suburbs"),
     Profile("Amy", TOKEN_P2, 34, "female", "cold sarcastic blunt", "secretary at a finance company", "england", "live in busy city, casual relationships, keeps emotional distance, prefers efficiency over kindness"),
-    Profile("Jorge", TOKEN_P3, 43, "male", "short-worded hardworking experienced", "construction worker", "mexico", "moved to united states with family, relatives back in mexico")
+    Profile("Jorge", TOKEN_P3, 43, "male", "short-worded hardworking experienced", "construction worker", "mexico", "moved to united states with family, relatives back in mexico"),
     Profile("TImmy", "null", 16, "male", "wise, videogame ethusiast, math wizz, nerdy", "student and omega strikers esports", "malaysia", "lives in us, professional omega strikers player")
 ]
 
