@@ -4,3 +4,4 @@ src/.env
 # Python cache
 **__pycache__/
 *.pyc
+assets

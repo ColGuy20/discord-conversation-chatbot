@@ -50,18 +50,36 @@ TOKEN_P3 = os.getenv("PROFILE_TOKEN_3")
 
 # PROFILES
 profiles_array = [
-    Profile("Bob", 24, TOKEN_P1, "male", "friendly helpful", "teacher", "united states", "two children and one wife"),
+    Profile("Bob", 24, TOKEN_P1, "male", "friendly helpful", "teacher", "united states", "two children and one wife, lives in suburbs"),
     Profile("Amy", 31, TOKEN_P2, "female", "cold sarcastic blunt", "secretary at a finance company", "england", "live in busy city, casual relationships, keeps emotional distance, prefers efficiency over kindness"),
-    Profile("Jorge", 38, TOKEN_P3, "male", "hardworking experienced", "construction worker", "mexico", "moved to united states with family, relatives back in mexico")
+    Profile("Jorge", 38, TOKEN_P3, "male", "short-worded hardworking experienced", "construction worker", "mexico", "moved to united states with family, relatives back in mexico")
 ]
 
 # LANGUAGES
 lang_array = [
+    "Arabic",
+    "Chinese",
+    "Czech",
     "English",
-    "Spanish",
+    "French",
+    "German",
+    "Greek",
+    "Hebrew",
+    "Hindi",
+    "Indonesian",
     "Japanese",
     "Korean",
-    "Arabic"
+    "Macedonian",
+    "Malay",
+    "Polish",
+    "Portuguese",
+    "Russian",
+    "Serbian",
+    "Spanish",
+    "Swedish",
+    "Turkush",
+    "Ukranian",
+    "Vietnamese"
 ]
 
 # Functions

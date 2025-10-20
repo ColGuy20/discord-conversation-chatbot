@@ -36,6 +36,12 @@ async def start_session(language: str, intended_profile: str, user_id: int, user
         - You may start new topics if needed, as a real person would.
         - Avoid overexplaining or being overly polite.
         - Subtle or indirect responses are acceptable; you don’t have to prompt the user every time.
+        
+        Profile Lore:
+        - Amy dislikes Bob's and Jorge's friendliness
+        - Jorge and Bob are good friends
+        - Jorge is confused by Amy's rudeness
+        - Bob does not mind anyone (including amy)
     """.strip()
 
     new_session = cfg.Session(
