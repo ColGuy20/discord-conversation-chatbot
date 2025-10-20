@@ -32,14 +32,13 @@ def run_bot():
         )
     async def launch(interaction: discord.Interaction, language: str, profile: str):
         is_dm = interaction.guild is None
-        cfg.log_checkpoint() # 1
         try:
             if is_dm:
                 await interaction.response.send_message("Starting your session…")
             else:
                 await interaction.response.defer(ephemeral=True, thinking=True)
 
-            first_msg = await cvsn.start_session(language, profile, interaction.user.id)
+            first_msg = await cvsn.start_session(language, profile, interaction.user.id, interaction.user.name)
 
             if is_dm:
                 await interaction.edit_original_response(content=first_msg)
@@ -112,18 +111,6 @@ def run_bot():
             await interaction.followup.send("Sync failed. Check logs.", ephemeral=True)
             print(f"[LOG] Sync from discord failed.\n{e}")
 
-    # Command to end program from discord
-    @tree.command(name="terminate", description="Terminate program. (developer)")
-    async def terminate(interaction: discord.Interaction):
-        if interaction.user.id != cfg.USER_ID:
-            await interaction.response.send_message(
-                "You do not have permission to use this command!", ephemeral=True
-            )
-            return
-        await interaction.response.send_message("Shutting down…", ephemeral=True)
-        print("[LOG] Bot has been shut down from discord.")
-        await client.close()
-
     # Command to list sessions
     @tree.command(name="list", description="List sessions. (developer)")
     async def list(interaction: discord.Interaction):
@@ -134,15 +121,12 @@ def run_bot():
             return
         
         if not cfg.SESSIONS:
-            session_list = "No sessions."
+            sessions_list = "No sessions."
         else:
             lines = []
             for uid, s in cfg.SESSIONS.items():
                 status = "ACTIVE" if s.active else "ENDED"
-                lines.append(
-                    f"- user_id={uid} | profile={s.profile.name} | lang={s.language} | "
-                    f"{status} | turns={len(s.messages)}"
-                )
+                lines.append(f"- user_id={uid} | profile={s.profile.name} | lang={s.language} | {status} | turns={len(s.messages)} | user_name={s.user_name}")
             sessions_list = "Sessions:\n" + "\n".join(lines)
         await interaction.response.send_message(sessions_list, ephemeral=True)
 

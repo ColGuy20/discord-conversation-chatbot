@@ -1,5 +1,6 @@
 import os
 from dataclasses import dataclass, field
+import asyncio
 from typing import Dict, List
 from dotenv import load_dotenv
 
@@ -20,10 +21,12 @@ class Profile:
 @dataclass
 class Session:
     user_id: int
+    user_name: str
     language: str
     profile: Profile
     messages: List[dict] = field(default_factory=list)
     active: bool = True
+    lock: asyncio.Lock = field(default_factory=asyncio.Lock)
 
 # VARIABLES
 load_dotenv()
@@ -76,12 +79,5 @@ def recommended_language(chosen_language):
             # Add profile
             return ""
 
-CHECKPOINT = 0
-
-def log_checkpoint():
-    CHECKPOINT += 1
-    print("[LOG] Checkpoint "+CHECKPOINT+".")
-
-def owner_checkpoint(id):
-    if id == USER_ID:
-        log_checkpoint()
+def temp_log(chp: str):
+    print(f"[LOG] Checkpoint {chp}")

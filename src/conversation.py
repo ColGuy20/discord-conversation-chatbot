@@ -5,12 +5,9 @@ import api
 
 #--Direct Message Conversation--
 
-LOCK = asyncio.Lock()
-
 # Session Functions
-async def start_session(language: str, intended_profile: str, user_id: int) -> str:
+async def start_session(language: str, intended_profile: str, user_id: int, user_name: str) -> str:
     profile = cfg.profile_info(intended_profile)
-
     prompt = f"""
         You are an educational language tutor. 
         Your purpose is to help the user learn {language} through natural conversation. 
@@ -30,15 +27,16 @@ async def start_session(language: str, intended_profile: str, user_id: int) -> s
         5. Respond as if you are {profile.name}, not as an assistant.
     """.strip()
 
-    async with LOCK:
-        cfg.SESSIONS[user_id] = cfg.Session(
-            user_id=user_id,
-            language=language,
-            profile=profile,
-            messages=[{"role": "system", "content": prompt}],
-            active=True,
-        )
+    new_session = cfg.Session(
+        user_id=user_id,
+        user_name=user_name,
+        language=language,
+        profile=profile,
+        messages=[{"role": "system", "content": prompt}],
+        active=True,
+    )
 
+    cfg.SESSIONS[user_id] = new_session
     greeting = "Hello. What is your name and age?"
     resp = await append_and_reply(user_id, {"role": "user", "content": greeting})
     return resp 
@@ -48,10 +46,10 @@ def has_session(user_id: int) -> bool:
     return bool(s and s.active)
 
 async def end_session(user_id: int) -> str:
-    async with LOCK:
-        s = cfg.SESSIONS.get(user_id)
-        if not s:
-            return "No active session. Use /launch to start one."
+    s = cfg.SESSIONS.get(user_id)
+    if not s or not s.active:
+        return "No active session. Use /launch to start one."
+    async with s.lock:
         s.active = False
     return "Session ended. Thanks for chatting!"
 
@@ -73,12 +71,12 @@ async def append_and_reply(user_id: int, new_message: dict) -> str:
     if not s or not s.active:
         return "No active session. Use /launch to start one."
 
-    async with LOCK:
+    async with s.lock:
         s.messages.append(new_message)
 
     response = await api.fetch_api(s.messages)
 
-    async with LOCK:
+    async with s.lock:
         s.messages.append({"role": "assistant", "content": response})
 
     return response

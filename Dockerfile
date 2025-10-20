@@ -15,4 +15,4 @@ COPY src ./src
 EXPOSE 8080
 
 # Run main script
-CMD ["python", "src/main.py"]
+CMD ["python", "-u", "src/main.py"]
